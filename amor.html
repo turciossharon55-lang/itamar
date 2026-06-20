@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Favorito ❤️</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; }
+        
+        body { 
+            background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Título Enorme */
+        h1 {
+            color: #ff4d6d;
+            font-size: 60px;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 0 20px rgba(255, 77, 109, 0.6);
+            animation: latido 1.2s infinite alternate;
+            z-index: 10;
+        }
+
+        @keyframes latido {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+
+        /* Contenedor de Botones */
+        .buttons-container {
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            justify-content: center;
+            height: 60px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Botón de Amor */
+        .btn-love {
+            background-color: #ff4d6d;
+            color: white;
+        }
+        .btn-love:hover {
+            background-color: #ff758f;
+            transform: scale(1.05);
+        }
+
+        /* Botón Trampa */
+        .btn-hate {
+            background-color: #4a5568;
+            color: #cbd5e1;
+            position: absolute; /* Permite que se mueva por la pantalla */
+            transition: all 0.1s ease;
+        }
+
+        /* Ventanas de Mensajes */
+        .message-box {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(255,77,109,0.3);
+            max-width: 400px;
+            width: 100%;
+            margin-top: 30px;
+            z-index: 10;
+            animation: aparecer 0.4s ease-out forwards;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .message-box h2 { color: #ff4d6d; margin-bottom: 10px; }
+        .message-box p { color: #333; font-size: 16px; line-height: 1.5; }
+
+        /* Estrellas y Corazones Flotantes */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            animation: flotar 4s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes flotar {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>TE AMO</h1>
+
+    <div class="buttons-container">
+        <!-- Botón que sí funciona -->
+        <button class="btn btn-love" onclick="accionAmor()">Yo también te amo</button>
+        <!-- Botón escurridizo -->
+        <button class="btn btn-hate" id="btnHate" onmouseover="moverBoton()" onclick="accionOdio()">Yo te odio</button>
+    </div>
+
+    <!-- Mensaje Éxito -->
+    <div class="message-box" id="boxLove">
+        <h2>¡Lo sabía! 🥰</h2>
+        <p>Pero déjame aclararte una cosita... <strong>¡YO TE AMO MUCHÍSIMO MÁS!</strong> Eres mi persona favorita de todo el universo entero. ❤️</p>
+    </div>
+
+    <!-- Mensaje Trampa (Por si logra darle clic) -->
+    <div class="message-box" id="boxHate">
+        <h2>¿Disculpa? 🤨</h2>
+        <p>Ese botón ni siquiera debía dejarse clickear. Tu intento de rebeldía ha sido registrado, pero ambos sabemos que te mueres de amor por mí. Inténtalo de nuevo. 😘</p>
+    </div>
+
+    <script>
+        // Función para generar la lluvia de estrellas y corazones de fondo
+        function crearParticulas() {
+            const simbolos = ['❤️', '⭐', '✨', '💖', '🌟'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const particula = document.createElement('div');
+                    particula.classList.add('particle');
+                    particula.innerText = simbolos[Math.floor(Math.random() * simbolos.length)];
+                    particula.style.left = Math.random() * 100 + 'vw';
+                    particula.style.fontSize = Math.random() * 20 + 15 + 'px';
+                    particula.style.animationDuration = Math.random() * 3 + 3 + 's';
+                    document.body.appendChild(particula);
+                }, i * 150);
+            }
+        }
+        window.onload = crearParticulas;
+
+        // Mostrar respuesta bonita
+        function accionAmor() {
+            document.getElementById('boxHate').style.display = 'none';
+            document.getElementById('boxLove').style.display = 'block';
+            // Reposicionar el botón trampa a su lugar original por si se movió
+            const btnHate = document.getElementById('btnHate');
+            btnHate.style.position = 'static';
+        }
+
+        // Mostrar respuesta trampa si logra clicarlo
+        function accionOdio() {
+            document.getElementById('boxLove').style.display = 'none';
+            document.getElementById('boxHate').style.display = 'block';
+        }
+
+        // Hace que el botón "Yo te odio" escape cuando intentas tocarlo
+        function moverBoton() {
+            const btn = document.getElementById('btnHate');
+            btn.style.position = 'absolute';
+            
+            // Genera coordenadas aleatorias seguras dentro de la pantalla
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth - 40) + 20;
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight - 40) + 20;
+            
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        // Soporte para pantallas táctiles de celulares (hace que se mueva al intentar tocarlo)
+        document.getElementById('btnHate').addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moverBoton();
+        });
+    </script>
+
+</body>
+</html>
